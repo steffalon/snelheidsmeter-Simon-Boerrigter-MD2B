@@ -15,34 +15,37 @@ void setup() {
  
 void loop()
 {
-    long t;
-    long dist1, speed, dist2;
+    float t;
+    float dist1, dist2;
+    float speed;
 
     dist1 = dist();
     t = time();
-    Serial.print("Slept");
     dist2 = dist();
     Serial.println();
     Serial.print("Distance 1: ");
     Serial.print(dist1);
+    Serial.print(" m");
     Serial.println();
     Serial.print("Distance 2: ");
     Serial.print(dist2);
+    Serial.print(" m");
     Serial.println();
-    speed = (dist2 - dist1)/(t/100);
+    speed = ((dist2 - dist1))/(t/1000);
 
     Serial.println();
+    Serial.print("Speed in m/s: ");
     Serial.print(speed);
-//Serial.print(dist2);Serial.println();
-//Serial.print(dist1);Serial.println();
-//Serial.print(t);Serial.println();
+    Serial.println();
+    Serial.println();
+    Serial.println();
     Serial.println();
     
-    delay(2000); 
+    delay(500); 
 }
 
-long dist() {
-  long cm, inches, duration;
+float dist() {
+  float cm, inches, duration;
   // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
   // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
   digitalWrite(trigPin, LOW);
@@ -60,12 +63,12 @@ long dist() {
   // convert the time into a distance
   cm = (duration/2) / 29.1;
   inches = (duration/2) / 74; 
-  
+  cm = cm/100;
   return cm;
 }
 
-long time() {
-  long sleepTime = 100;
+float time() {
+  float sleepTime = 100;
   delay(100);
   return sleepTime;  
 }
