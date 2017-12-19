@@ -15,15 +15,21 @@ void setup() {
  
 void loop()
 {
-    double speed, t;
-    double dist1, dist2;
+    long t;
+    long dist1, speed, dist2;
 
     dist1 = dist();
     t = time();
     Serial.print("Slept");
     dist2 = dist();
-
-    speed = (dist2 - dist1)/t;
+    Serial.println();
+    Serial.print("Distance 1: ");
+    Serial.print(dist1);
+    Serial.println();
+    Serial.print("Distance 2: ");
+    Serial.print(dist2);
+    Serial.println();
+    speed = (dist2 - dist1)/(t/100);
 
     Serial.println();
     Serial.print(speed);
@@ -35,24 +41,31 @@ void loop()
     delay(2000); 
 }
 
-double dist() {
-  double tijd, m;
-    
-    digitalWrite(trigPin, LOW);
-    delayMicroseconds(2);
-    digitalWrite(trigPin, HIGH);
-    delayMicroseconds(5);
-    digitalWrite(trigPin, LOW);
+long dist() {
+  long cm, inches, duration;
+  // The sensor is triggered by a HIGH pulse of 10 or more microseconds.
+  // Give a short LOW pulse beforehand to ensure a clean HIGH pulse:
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(5);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
  
-    tijd = pulseIn(echoPin, HIGH); // TIME IS IN MICROSECONDS
-    
-    m = (tijd / 29 / 2);
-    return m;  
+  // Read the signal from the sensor: a HIGH pulse whose
+  // duration is the time (in microseconds) from the sending
+  // of the ping to the reception of its echo off of an object.
+  pinMode(echoPin, INPUT);
+  duration = pulseIn(echoPin, HIGH);
+ 
+  // convert the time into a distance
+  cm = (duration/2) / 29.1;
+  inches = (duration/2) / 74; 
+  
+  return cm;
 }
 
-double time() {
+long time() {
   long sleepTime = 100;
-  Serial.print("sleeping");
   delay(100);
   return sleepTime;  
 }
